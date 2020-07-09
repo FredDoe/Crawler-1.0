@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <p>{{ status }}</p>
+        <a href="/">
+            <button type="submit" class="btn btn-success">
+            Crawl Again
+            </button>
+        </a>
+
+        <h2>Data obtained for "{{ keyword }}" keyword</h2>
+        {% for data in crawledData %}
+        <h3>Data from <a href="{{ data['url'] }}">{{ data['url'] }}</a>
+            <p>Keyword Appeared: {{ data['frequency'] }} times</p>
+        </h3>
+
+            <p>{{ data['data'] }}</p><hr/><br/>
+        {% endfor %}
+    </div>
+{% endblock %}
