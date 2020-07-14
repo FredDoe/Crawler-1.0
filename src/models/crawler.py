@@ -10,47 +10,59 @@ def spider(url, keyword, maxPages):
     pagesToVisit = [url]
     numberVisited = 0
     visitedPages = []
+    foundKeywords = []
     foundWord = False
+    keyFrequency = {}
+    keywords = keyword.split(",")
     # Create a LinkParser and get all the links on the page.Search the page for the keyword(string)
     while numberVisited < maxPages and pagesToVisit != []:
         numberVisited = numberVisited + 1
         # Start from the beginning of the collection of pages to visit:
         url = pagesToVisit[0]
         pagesToVisit = pagesToVisit[1:]
-        # My to do: Fix the bug here which prevents further crawling when word is not found on the first page
-        try:
-            print(numberVisited, "Visiting:", url)
-            parser = LinkParser()
-            data, links = parser.getLinks(url)
-            if data.find(keyword) > -1:
-                foundWord = True
-                #strip the html tags off
-                strippedData = stripper(data)
-                # Add the urls we found to the end of our collection of pages to visit:
-                pagesToVisit = pagesToVisit + links
-                if foundWord:
-                    print("The word", keyword, "was found at", url)
-                    #determine frequency of keyword in stripped data
-                    frequency = strippedData.count(keyword)
+        if url in visitedPages:
+            continue
+        else:
+            try:
+                print(numberVisited, "Visiting:", url)
+                parser = LinkParser()
+                data, links = parser.getLinks(url)
+                for keyword in keywords:
+                    if data.find(keyword) > -1:
+                        frequency = data.count(keyword)
+                        foundKeywords.append(keyword)
+                        keyFrequency.update({'keyword':keyword,'frequency':frequency})
+                if len(foundKeywords) > 0:
+                    foundWord = True
+                    strippedData = stripper(data)
+                    pagesToVisit = pagesToVisit + links
+                    print("The word", foundKeywords, "was found at", url)
+                    #frequency = strippedData.count(keyword)
                     foundData = {
-                        'keyword': keyword,
-                        'frequency':frequency,
+                        'searchedKeywords': keywords,
+                        'foundKeywords':{
+                            'keyword':keyFrequency['keyword'],
+                            'frequency':keyFrequency['frequency']
+                        },
                         'url': url,
                         'data': strippedData
                     }
-                    # save the json file to database
                     Database.insert(collection="scraped_data", data=foundData)
-        except:
-            print(" **Failed!**")
+
+            except:
+                print(" **Failed!**")
+        visitedPages.append(url)
+        foundKeywords = []
+        keyFrequency ={}
     if foundWord:
         return{
             'status':'Success',
-            'message':'The keyword \" %s \" was found '%keyword
+            'message':'The keyword was found '
         }
     else:
         return{
             'status': 'failed',
-            'message': 'The keyword \" %s \" was not found on any oof the pages visited'%keyword
+            'message': 'The keyword was not found on any of the pages visited'
         }
 
 

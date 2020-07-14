@@ -27,10 +27,10 @@ class LinkParser(HTMLParser):
         # Use the urlopen function from the standard Python 3 library
         response = urlopen(url)
         # We are looking for HTML and not data floating around the page such as JavaScript files, CSS, or .PDFs
-        if response.getheader('Content-Type') == 'text/html':
-            htmlBytes = response.read()
-            htmlString = htmlBytes.decode("utf-8")
-            self.feed(htmlString)
-            return htmlString, self.links
-        else:
-            return "", []
+        #if response.getheader('Content-Type') == 'text/html':
+        htmlBytes = response.read()
+        htmlString = htmlBytes.decode("utf-8")
+        self.feed(htmlString)
+        return htmlString, self.links
+        # else:
+        #     return "", []
