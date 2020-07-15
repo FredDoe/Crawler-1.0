@@ -2,17 +2,20 @@
 {% block content %}
     <div class="container">
         <p>{{ status }}</p>
-        <a href="/">
-            <button type="submit" class="btn btn-success">
-            Crawl Again
-            </button>
-        </a>
-
-        <h2>Data obtained for "{{ keyword }}" keyword</h2>
+        <a href="/"><button type="submit" class="btn btn-success">Crawl Again</button></a>
+        <h2>
+            Data obtained for <u> {% for key in keyword %}
+            {{ key }},
+            {% endfor%}"
+            </u>
+            keywords
+        </h2>
         {% for data in crawledData %}
-        <h3>Data from <a href="{{ data['url'] }}">{{ data['url'] }}</a>
-            <p>Keyword Appeared: {{ data['frequency'] }} times</p>
-        </h3>
+        <h3>Data obtained from <a href="{{ data['url'] }}">{{ data['url'] }}</a></h3>
+            <h4>Keywords found and their frequencies on the page</h4>
+            {%for key,value in data['keywordWithFrequency'].items() %}
+            <b><i>{{ key}}  :  {{value}}</i></b><br/>
+            {% endfor %}
 
             <p>{{ data['data'] }}</p><hr/><br/>
         {% endfor %}
