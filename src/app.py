@@ -34,14 +34,14 @@ def pageCrawler_template():
         url = url
 
     status = spider(url, keyword, maxPage)
-
+    keyword = keyword.split(",")
     return make_response( retrieveCrawledData(keyword, status))
 
 
 @app.route('/crawled-pages/result')
 def retrieveCrawledData(keyword, status):
     crawledData = findByKeyword(keyword)
-
+    print(crawledData)
     if len(crawledData) > 0:
          return render_template("crawledResult.html", crawledData=crawledData, status=status, keyword=keyword)
     else:
