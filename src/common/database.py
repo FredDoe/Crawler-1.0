@@ -18,7 +18,7 @@ class Database(object):
 
     @staticmethod
     def find(collection, query):
-        return Database.DATABASE[collection].find(query).sort([("frequency",-1)])
+        return Database.DATABASE[collection].find(query).sort([("summedFrequency",-1)])
 
     @staticmethod
     def find_one(collection, query):
