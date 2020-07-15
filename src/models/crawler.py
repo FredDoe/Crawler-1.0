@@ -13,6 +13,7 @@ def spider(url, keyword, maxPages):
     foundKeywords = []
     foundWord = False
     keyFrequency = {}
+    sum = 0
     keywords = keyword.split(",")
     # Create a LinkParser and get all the links on the page.Search the page for the keyword(string)
     while numberVisited < maxPages and pagesToVisit != []:
@@ -29,21 +30,22 @@ def spider(url, keyword, maxPages):
                 data, links = parser.getLinks(url)
                 for keyword in keywords:
                     if data.find(keyword) > -1:
-                        frequency = data.count(keyword)
                         foundKeywords.append(keyword)
-                        keyFrequency.update({'keyword':keyword,'frequency':frequency})
                 if len(foundKeywords) > 0:
                     foundWord = True
                     strippedData = stripper(data)
+                    for word in foundKeywords:
+                        frequency = strippedData.count(word)
+                        if frequency > 0 :
+                            keyFrequency[word] = frequency
+                            sum = sum + frequency
                     pagesToVisit = pagesToVisit + links
                     print("The word", foundKeywords, "was found at", url)
                     #frequency = strippedData.count(keyword)
                     foundData = {
                         'searchedKeywords': keywords,
-                        'foundKeywords':{
-                            'keyword':keyFrequency['keyword'],
-                            'frequency':keyFrequency['frequency']
-                        },
+                        'keywordWithFrequency': keyFrequency,
+                        'summedFrequency': sum,
                         'url': url,
                         'data': strippedData
                     }
@@ -53,16 +55,17 @@ def spider(url, keyword, maxPages):
                 print(" **Failed!**")
         visitedPages.append(url)
         foundKeywords = []
-        keyFrequency ={}
+        keyFrequency.clear()
+        sum = 0
     if foundWord:
         return{
             'status':'Success',
-            'message':'The keyword was found '
+            'message':'The keyword(s) was(were) found '
         }
     else:
         return{
             'status': 'failed',
-            'message': 'The keyword was not found on any of the pages visited'
+            'message': 'No keyword was not found on any of the pages visited'
         }
 
 
@@ -82,3 +85,6 @@ def stripper(html):
     text = '\n'.join(chunk for chunk in chunks if chunk)
 
     return text
+
+
+# spider("https://www.dreamhost.com/", "secure,data,host,url", 3)
