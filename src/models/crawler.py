@@ -41,15 +41,15 @@ def spider(url, keyword, maxPages):
                             sum = sum + frequency
                     pagesToVisit = pagesToVisit + links
                     print("The word", foundKeywords, "was found at", url)
-                    #frequency = strippedData.count(keyword)
-                    foundData = {
-                        'searchedKeywords': keywords,
-                        'keywordWithFrequency': keyFrequency,
-                        'summedFrequency': sum,
-                        'url': url,
-                        'data': strippedData
-                    }
-                    Database.insert(collection="scraped_data", data=foundData)
+                    if len(keyFrequency)>0:
+                        foundData = {
+                            'searchedKeywords': keywords,
+                            'keywordWithFrequency': keyFrequency,
+                            'summedFrequency': sum,
+                            'url': url,
+                            'data': strippedData
+                        }
+                        Database.insert(collection="scraped_data", data=foundData)
 
             except:
                 print(" **Failed!**")
@@ -72,16 +72,11 @@ def spider(url, keyword, maxPages):
 
 def stripper(html):
     soup = BeautifulSoup(html, 'lxml')
-    # kill all script and style elements
     for script in soup(["script", "style"]):
-        script.extract()  # rip it out
-    # get text
+        script.extract()
     text = soup.get_text()
-    # break into lines and remove leading and trailing space on each
     lines = (line.strip() for line in text.splitlines())
-    # break multi-headlines into a line each
     chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-    # drop blank lines
     text = '\n'.join(chunk for chunk in chunks if chunk)
 
     return text
