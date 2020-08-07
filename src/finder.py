@@ -1,6 +1,9 @@
 from html.parser import HTMLParser
 from urllib.request import urlopen
 from urllib import parse
+
+from bs4 import BeautifulSoup
+
 from src.common.database import Database
 
 # We are going to create a class called LinkParser that inherits some
@@ -80,16 +83,17 @@ def spider(url, word, maxPages):
                 # of pages to visit:
                 pagesToVisit = pagesToVisit + links
                 print(" **Success!**")
+                stripped_data = stripper(data)
                 if foundWord:
                     print("The word", word, "was found at", url)
                     # store retrieved data in a json file
                     foundData = {
                         'keyword': word,
                         'url': url,
-                        'data': data
+                        'data': stripped_data
                     }
                     # save the json file to database
-                    Database.insert(collection="scraped_data", data=foundData)
+                    #Database.insert(collection="scraped_data", data=foundData)
                     print(foundData)
         except:
             print(" **Failed!**")
@@ -98,6 +102,15 @@ def spider(url, word, maxPages):
     else:
         print("Word never found")
 
+def stripper(html):
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup(["script", "style"]):
+        script.extract()
+    text = soup.get_text()
+    lines = (line.strip() for line in text.splitlines())
+    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+    text = '\n'.join(chunk for chunk in chunks if chunk)
 
+    return text
 
 spider("https://www.dreamhost.com/", "secure", 10)

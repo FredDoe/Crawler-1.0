@@ -1,10 +1,10 @@
 __author__='Godfred Doe'
 
 from bs4 import BeautifulSoup
-
 from src.common.database import Database
 from src.models.linkparser import LinkParser
-
+from src.models.theClassifier import predict_from_text
+import src.models.theClassifier
 # The spider function takes a URL, a word to find,and the number of pages to search through
 def spider(url, keyword, maxPages):
     pagesToVisit = [url]
@@ -34,6 +34,10 @@ def spider(url, keyword, maxPages):
                 if len(foundKeywords) > 0:
                     foundWord = True
                     strippedData = stripper(data)
+                    # predict data category and return the probability of the catgory
+                    category, probability = predict_from_text(strippedData)
+                    category = category[0].upper() + category[1:]
+                    probability = probability.round(2)
                     for word in foundKeywords:
                         frequency = strippedData.count(word)
                         if frequency > 0 :
@@ -47,7 +51,9 @@ def spider(url, keyword, maxPages):
                             'keywordWithFrequency': keyFrequency,
                             'summedFrequency': sum,
                             'url': url,
-                            'data': strippedData
+                            'data': strippedData,
+                            'category': category,
+                            'certainty': probability
                         }
                         Database.insert(collection="scraped_data", data=foundData)
 
@@ -71,7 +77,7 @@ def spider(url, keyword, maxPages):
 
 
 def stripper(html):
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, "html.parser")
     for script in soup(["script", "style"]):
         script.extract()
     text = soup.get_text()
@@ -83,3 +89,5 @@ def stripper(html):
 
 
 # spider("https://www.dreamhost.com/", "secure,data,host,url", 3)
+
+
