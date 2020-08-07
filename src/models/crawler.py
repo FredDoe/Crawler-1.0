@@ -1,10 +1,11 @@
 __author__='Godfred Doe'
 
+
 from bs4 import BeautifulSoup
 from src.common.database import Database
 from src.models.linkparser import LinkParser
 from src.models.theClassifier import predict_from_text
-import src.models.theClassifier
+
 # The spider function takes a URL, a word to find,and the number of pages to search through
 def spider(url, keyword, maxPages):
     pagesToVisit = [url]
@@ -66,7 +67,7 @@ def spider(url, keyword, maxPages):
     if foundWord:
         return{
             'status':'Success',
-            'message':'The keyword(s) was(were) found '
+            'message':'The keywords were found '
         }
     else:
         return{
@@ -86,6 +87,8 @@ def stripper(html):
     text = '\n'.join(chunk for chunk in chunks if chunk)
 
     return text
+
+
 
 
 # spider("https://www.dreamhost.com/", "secure,data,host,url", 3)

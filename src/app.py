@@ -6,9 +6,8 @@ from src.common.database import Database
 from src.models.crawler import spider
 from src.models.datareturner import findByKeyword
 
-
 app = Flask(__name__)  # '__main__'
-app.secret_key = "Godfred55444"
+app.secret_key = "Godfred554433"
 
 
 

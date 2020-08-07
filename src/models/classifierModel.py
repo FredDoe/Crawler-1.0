@@ -1,29 +1,15 @@
 import re
 import pickle
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
-from sklearn.feature_selection import chi2
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.tag import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
-from collections import defaultdict
-from nltk.corpus import wordnet as wn
 from sklearn import svm
-from sklearn.naive_bayes import MultinomialNB
-from pprint import pprint
-from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.model_selection import ShuffleSplit
-import seaborn as sns
-import random
-from collections import defaultdict
 
-df = pd.read_csv('parsed-news-data.csv')
+df = pd.read_csv('C:/HOBBY/python/analitica_innovare/Crawler/src/models/parsed-news-data.csv')
 
 X_train, X_test, y_train, y_test = train_test_split(df['Parsed_Content'],
                                                     df['Category_Code'],
