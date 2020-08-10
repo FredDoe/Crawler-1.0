@@ -38,6 +38,8 @@ def spider(url, keyword, maxPages):
                     # predict data category and return the probability of the catgory
                     category, probability = predict_from_text(strippedData)
                     category = category[0].upper() + category[1:]
+                    if len(category) < 0:
+                        category = 'Uncertain of Category'
                     probability = probability.round(2)
                     for word in foundKeywords:
                         frequency = strippedData.count(word)
