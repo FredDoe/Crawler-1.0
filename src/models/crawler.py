@@ -15,7 +15,9 @@ def spider(url, keyword, maxPages):
     foundWord = False
     keyFrequency = {}
     sum = 0
-    keywords = keyword.split(",")
+    keywords  = keyword.split(",")
+    #keywords =[kword.strip() for kword in keywords_raw]
+
     # Create a LinkParser and get all the links on the page.Search the page for the keyword(string)
     while numberVisited < maxPages and pagesToVisit != []:
         numberVisited = numberVisited + 1
@@ -74,9 +76,8 @@ def spider(url, keyword, maxPages):
     else:
         return{
             'status': 'failed',
-            'message': 'No keyword was not found on any of the pages visited'
+            'message': 'No keyword was found on any of the pages visited'
         }
-
 
 
 def stripper(html):
@@ -91,7 +92,11 @@ def stripper(html):
     return text
 
 
+def name():
+    pass
 
+def another_name():
+    pass
 
 # spider("https://www.dreamhost.com/", "secure,data,host,url", 3)
 

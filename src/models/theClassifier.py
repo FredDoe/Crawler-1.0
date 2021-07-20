@@ -1,35 +1,36 @@
-__author__:'Godfred DOe'
+__author__:'Godfred Doe'
 import pickle
 import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
+data_path = 'C:/workspace/python/analitica_innovare/Crawler/src/models'
 # load the dataset
-df = pd.read_csv('C:/HOBBY/python/analitica_innovare/Crawler/src/models/parsed-news-data.csv')
+df = pd.read_csv(data_path +'/parsed-news-data.csv')
 
 # Loading the necessary data from the already trained classifier
 # tfidf
-with open('C:/HOBBY/python/analitica_innovare/Crawler/src/models/Pickles/tfidf.pickle', 'rb') as data:
+with open(data_path+'/Pickles/tfidf.pickle', 'rb') as data:
     tfidf = pickle.load(data)
 
 # X_train
-with open('C:/HOBBY/python/analitica_innovare/Crawler/src/models/Pickles/X_train.pickle', 'rb') as data:
+with open(data_path+'/Pickles/X_train.pickle', 'rb') as data:
     X_train = pickle.load(data)
 
 # X_test
-with open('C:/HOBBY/python/analitica_innovare/Crawler/src/models/Pickles/X_test.pickle', 'rb') as data:
+with open(data_path+'/Pickles/X_test.pickle', 'rb') as data:
     X_test = pickle.load(data)
 
 # y_train
-with open('C:/HOBBY/python/analitica_innovare/Crawler/src/models/Pickles/y_train.pickle', 'rb') as data:
+with open(data_path+'/Pickles/y_train.pickle', 'rb') as data:
     y_train = pickle.load(data)
 
 # y_test
-with open('C:/HOBBY/python/analitica_innovare/Crawler/src/models/Pickles/y_test.pickle', 'rb') as data:
+with open(data_path+'/Pickles/y_test.pickle', 'rb') as data:
     y_test = pickle.load(data)
 
 # SVM Model
-with open('C:/HOBBY/python/analitica_innovare/Crawler/src/models/Models/best_svc.pickle', 'rb') as data:
+with open(data_path+'/Models/best_svc.pickle', 'rb') as data:
     svc_model = pickle.load(data)
 
 # Category mapping dictionary

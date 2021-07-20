@@ -9,7 +9,9 @@ from sklearn import svm
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import ShuffleSplit
 
-df = pd.read_csv('C:/HOBBY/python/analitica_innovare/Crawler/src/models/parsed-news-data.csv')
+
+data_path = 'C:/workspace/python/analitica_innovare/Crawler/src/models/parsed-news-data.csv'
+df = pd.read_csv(data_path)
 
 X_train, X_test, y_train, y_test = train_test_split(df['Parsed_Content'],
                                                     df['Category_Code'],

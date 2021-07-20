@@ -34,17 +34,19 @@ def pageCrawler_template():
 
     status = spider(url, keyword, maxPage)
     keyword = keyword.split(",")
-    return make_response( retrieveCrawledData(keyword, status))
+    return make_response(retrieveCrawledData(keyword, status))
 
 
 @app.route('/crawled-pages/result')
 def retrieveCrawledData(keyword, status):
     crawledData = findByKeyword(keyword)
-    print(crawledData)
+    # print(crawledData)
     if len(crawledData) > 0:
          return render_template("crawledResult.html", crawledData=crawledData, status=status, keyword=keyword)
     else:
         return render_template('failed.html', status=status)
+
+
 @app.before_first_request
 def initialize_database():
     Database.initialize()

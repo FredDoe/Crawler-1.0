@@ -1,6 +1,13 @@
 {% extends "base.html" %}
+
+
 {% block content %}
-    <div class="container page-form">
+<script>
+  function clickAlert() {
+    alert("Crawling the Pages Now. Hold On!");
+}
+</script>
+ <div class="container page-form">
         <form id="login-form" action="/crawl-pages" method="post">
             <div class="form-group">
                 <label for="keyword"><b>Topic/Keywords</b></label>
@@ -19,7 +26,7 @@
 <!--                <input type="text" class="form-control" id="topic_area" name="topic_area"placeholder="Such as 'Sports','Health', Politics'" >-->
 <!--            </div>-->
 
-            <button type="submit" class="btn btn-success"><b>Crawl</b></button>
+            <button type="submit" onclick="clickAlert()" class="btn btn-success"><b>Crawl</b></button>
         </form>
     </div>
 {% endblock%}

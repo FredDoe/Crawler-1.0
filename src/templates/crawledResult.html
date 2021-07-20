@@ -1,24 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container">
-        <p>{{ status }}</p>
-        <a href="/"><button type="submit" class="btn btn-success">Crawl Again</button></a>
-        <h2><hr/>
-            Data obtained for <u> {% for key in keyword %}
-            {{ key }},
-            {% endfor%}"
-            </u>
-            keywords
-        </h2>
-        {% for data in crawledData %}
-        <h3>Data obtained from <a href="{{ data['url'] }}">{{ data['url'] }}</a></h3><hr/>
-        <b>Predicted Category of Data:</b> {{ data['category'] }}<br/>
-        <b>Certainty of Category Prediction:</b> {{ data['certainty'] }}%<br/><hr/>
-            {%for key,value in data['keywordWithFrequency'].items() %}
-        <b>{{ key}}</b> was found:  <b>{{value}}</b> time(s)<br/>
-            {% endfor %}
-        <hr/>
-        <p>{{ data['data'] }}</p><hr/><br/>
-        {% endfor %}
+<div class="container">
+    <div class="float-right">
+        <p>{{ status.message }}</p>
+        <a href="/"><button type="submit" class="btn btn-primary">Crawl Again</button></a>
     </div>
+
+    <div class="text-left">
+        <h2><hr/>
+            Data obtained for "<u>{% for key in keyword %}
+            {{ key }},
+            {% endfor%}
+            </u>
+            " keywords
+        </h2><hr><br>
+    {% for data in crawledData %}
+        <h2>Data obtained from <a href="{{ data['url'] }}">{{ data['url'] }}</a></h2>
+        <details>
+            <summary>View Details of Data Obtained</summary>
+            <b>Predicted Category of Data:</b> {{ data['category'] }}<br/>
+            <b>Certainty of Category Prediction:</b> {{ data['certainty'] }}%<br/><hr/>
+                {%for key,value in data['keywordWithFrequency'].items() %}
+            <b>{{ key}}</b> was found:  <b>{{value}}</b> time(s)<br/>
+                {% endfor %}
+            <hr/>
+            <p>{{ data['data']|safe }}</p><hr/><br/>
+        </details><hr>
+    {% endfor %}
+    </div>
+    <div class="float-right">
+        <a href="/"><button type="submit" class="btn btn-primary">Crawl Again</button></a>
+        <a href="#"><button type="submit" class="btn btn-primary">Back to Top</button></a>
+    </div>
+</div>
+
 {% endblock %}
